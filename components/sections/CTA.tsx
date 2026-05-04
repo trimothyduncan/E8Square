@@ -14,7 +14,7 @@ const STEPS = [
       <div className="flex flex-col gap-2 rounded-2xl bg-white/10 p-4 text-xs font-mono text-white/80">
         <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-green-400" /> Appointment confirmed</div>
         <div className="text-white/50">Tue, May 7 · 6:00 PM</div>
-        <div className="mt-1 rounded-lg bg-white/10 p-2 text-center tracking-wide">Haircut + Beard — $60</div>
+        <div className="mt-1 rounded-lg bg-white/10 p-2 text-center tracking-wide">Haircut + Beard — $150 TTD</div>
       </div>
     ),
   },
@@ -181,7 +181,7 @@ export default function CTA() {
               </div>
               <h3 className="mt-5 font-display text-3xl leading-tight tracking-tight md:text-4xl">
                 Be first on the list.<br />
-                <span className="italic text-gradient">Royalty waits for no one.</span>
+                <span className="italic text-gradient">Loyalty Pays Literally.</span>
               </h3>
               <p className="mt-4 text-sm leading-relaxed text-[var(--fg-muted)]">
                 Drop your email and you&apos;ll get early access to TT Loyalty Pass V1 —

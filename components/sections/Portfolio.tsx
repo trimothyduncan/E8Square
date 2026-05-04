@@ -1,63 +1,79 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useEffect, useState } from 'react';
-import { Heart, MessageCircle, ImagePlus } from 'lucide-react';
+import { useRef } from 'react';
+import { Heart, MessageCircle } from 'lucide-react';
 
-// ─── CONFIGURATION ────────────────────────────────────────────────────────────
-// 1. Go to https://behold.so and sign up with your Instagram account (@trimbyblue)
-// 2. Create a feed → copy the Feed ID (looks like: abcDEF123456)
-// 3. Paste it below OR set NEXT_PUBLIC_BEHOLD_FEED_ID in your .env.local
-const BEHOLD_FEED_ID =
-  process.env.NEXT_PUBLIC_BEHOLD_FEED_ID ?? '';
+// ─── Real posts from @trimbyblue via Behold ───────────────────────────────────
+// Images served from Behold's CDN (behold.pictures) — stable, CORS-safe URLs.
+// To keep this grid auto-updating in the future, swap POSTS for a live fetch:
+//   fetch(`https://feeds.behold.so/OOTPBp0hnQrdWxZ9284n`)
 // ─────────────────────────────────────────────────────────────────────────────
 
 interface Post {
   id: string;
-  caption?: string;
-  mediaUrl: string;
-  thumbnailUrl?: string;
+  prunedCaption?: string;
+  thumbnailUrl: string;
   mediaType: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
   timestamp: string;
   permalink: string;
 }
 
-function PostPlaceholder({ idx }: { idx: number }) {
-  const gradients = [
-    ['#1a6bff', '#0a3fa8'],
-    ['#2563eb', '#1e40af'],
-    ['#3b82f6', '#1d4ed8'],
-    ['#1d4ed8', '#1e3a8a'],
-    ['#4787ff', '#1a6bff'],
-    ['#60a5fa', '#2563eb'],
-  ];
-  const [a, b] = gradients[idx % gradients.length];
-  return (
-    <div
-      className="flex h-full w-full flex-col items-center justify-center gap-3 text-white/50"
-      style={{ background: `linear-gradient(135deg, ${a}55 0%, ${b}33 100%)` }}
-    >
-      <ImagePlus className="h-8 w-8" />
-      <span className="text-xs font-mono tracking-wider">@trimbyblue</span>
-    </div>
-  );
-}
+const POSTS: Post[] = [
+  {
+    id: '18101143960777362',
+    timestamp: '2026-04-15T11:35:53+0000',
+    permalink: 'https://www.instagram.com/reel/DXJpcBgkWhj/',
+    mediaType: 'VIDEO',
+    thumbnailUrl: 'https://behold.pictures/QLWJT6xkq5dijhPPVPvVWZeOjrB2/OOTPBp0hnQrdWxZ9284n/18101143960777362/large.jpg',
+    prunedCaption: "If you don't work, you don't eat young man 🎯",
+  },
+  {
+    id: '18090693629230405',
+    timestamp: '2026-04-13T18:52:45+0000',
+    permalink: 'https://www.instagram.com/reel/DXFR3ztkbU7/',
+    mediaType: 'VIDEO',
+    thumbnailUrl: 'https://behold.pictures/QLWJT6xkq5dijhPPVPvVWZeOjrB2/OOTPBp0hnQrdWxZ9284n/18090693629230405/large.jpg',
+    prunedCaption: 'Always Thank God for all the ways that he Blessed me 🙏🏾',
+  },
+  {
+    id: '18078472883527392',
+    timestamp: '2026-04-09T22:03:45+0000',
+    permalink: 'https://www.instagram.com/reel/DW7UtGZjwwP/',
+    mediaType: 'VIDEO',
+    thumbnailUrl: 'https://behold.pictures/QLWJT6xkq5dijhPPVPvVWZeOjrB2/OOTPBp0hnQrdWxZ9284n/18078472883527392/large.jpg',
+    prunedCaption: 'Put that on Sum❕',
+  },
+  {
+    id: '18076547390530739',
+    timestamp: '2026-04-08T21:08:03+0000',
+    permalink: 'https://www.instagram.com/reel/DW4pN3jD7TT/',
+    mediaType: 'VIDEO',
+    thumbnailUrl: 'https://behold.pictures/QLWJT6xkq5dijhPPVPvVWZeOjrB2/OOTPBp0hnQrdWxZ9284n/18076547390530739/large.jpg',
+    prunedCaption: 'New Stocks. Look Good, Smell Good 🧪',
+  },
+  {
+    id: '17896750521305929',
+    timestamp: '2025-10-03T00:19:31+0000',
+    permalink: 'https://www.instagram.com/reel/DPU53m3DABA/',
+    mediaType: 'VIDEO',
+    thumbnailUrl: 'https://behold.pictures/QLWJT6xkq5dijhPPVPvVWZeOjrB2/OOTPBp0hnQrdWxZ9284n/17896750521305929/large.jpg',
+    prunedCaption: "Wanna book today, Let's talk about it 🎯",
+  },
+  {
+    id: '17936402507962067',
+    timestamp: '2025-10-01T21:05:24+0000',
+    permalink: 'https://www.instagram.com/reel/DPR-8lrj7FT/',
+    mediaType: 'VIDEO',
+    thumbnailUrl: 'https://behold.pictures/QLWJT6xkq5dijhPPVPvVWZeOjrB2/OOTPBp0hnQrdWxZ9284n/17936402507962067/large.jpg',
+    prunedCaption: 'Linc 🔗 in bio',
+  },
+];
 
 export default function Portfolio() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const xScroll = useTransform(scrollYProgress, [0, 1], ['-5%', '5%']);
-  const [posts, setPosts] = useState<Post[]>([]);
-
-  useEffect(() => {
-    if (!BEHOLD_FEED_ID) return;
-    fetch(`https://feeds.behold.so/${BEHOLD_FEED_ID}`)
-      .then((r) => r.json())
-      .then((data: Post[]) => setPosts(data.slice(0, 6)))
-      .catch(() => {});
-  }, []);
-
-  const slots = Array.from({ length: 6 }, (_, i) => posts[i] ?? null);
 
   return (
     <section id="portfolio" ref={ref} className="relative py-32 overflow-hidden">
@@ -90,9 +106,9 @@ export default function Portfolio() {
         </motion.div>
 
         <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {slots.map((post, i) => (
+          {POSTS.map((post, i) => (
             <motion.article
-              key={post?.id ?? `placeholder-${i}`}
+              key={post.id}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
@@ -101,7 +117,7 @@ export default function Portfolio() {
               className="group relative overflow-hidden rounded-3xl glass-card cursor-pointer"
             >
               <a
-                href={post?.permalink ?? 'https://www.instagram.com/trimbyblue'}
+                href={post.permalink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block"
@@ -112,24 +128,17 @@ export default function Portfolio() {
                     transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                     className="h-full w-full"
                   >
-                    {post ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={
-                          post.mediaType === 'VIDEO'
-                            ? (post.thumbnailUrl ?? post.mediaUrl)
-                            : post.mediaUrl
-                        }
-                        alt={post.caption ?? 'Instagram post by @trimbyblue'}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <PostPlaceholder idx={i} />
-                    )}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={post.thumbnailUrl}
+                      alt={post.prunedCaption ?? 'Instagram post by @trimbyblue'}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
                   </motion.div>
                 </div>
 
-                {post?.caption && (
+                {post.prunedCaption && (
                   <motion.div
                     initial={{ y: 8, opacity: 0.85 }}
                     variants={{ hover: { y: 0, opacity: 1 } }}
@@ -138,7 +147,7 @@ export default function Portfolio() {
                   >
                     <div className="rounded-2xl glass p-3.5">
                       <p className="line-clamp-2 text-xs leading-relaxed text-[var(--fg-muted)]">
-                        {post.caption}
+                        {post.prunedCaption}
                       </p>
                       <div className="mt-2.5 flex items-center gap-3 text-[10px] text-[var(--fg-muted)]">
                         <Heart className="h-3 w-3 text-[var(--brand)]" />

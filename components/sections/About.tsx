@@ -21,13 +21,13 @@ const PILLARS = [
   },
   {
     icon: History,
-    title: 'Style Memory',
-    body: 'Every visit is logged: clipper guard, neck taper, beard line. Your next barber picks up exactly where the last one left.',
+    title: 'Rewarding Loyalty',
+    body: 'Every visit is logged: Leaving you eligible for perks, and us with the data to make every future visit better.',
   },
   {
     icon: Scissors,
     title: 'Pro-Grade Tools',
-    body: 'Andis, Babyliss, Dovo. Sterilized between every pass. Calibrated weekly. Sharp the way it should be.',
+    body: 'Professional-grade clippers, trimmers, and straight razors — sterilized between every client, calibrated weekly, and maintained to a edge that performs the way it should.',
   },
   {
     icon: Calendar,
@@ -68,7 +68,7 @@ export default function About() {
             <span className="italic text-gradient">One brand.</span>
           </h2>
           <p className="mt-6 max-w-2xl text-lg text-[var(--fg-muted)] leading-relaxed">
-            E8 Square is a barber studio with the infrastructure of a SaaS company.
+            E8 Square is a barber studio with the infrastructure of a Digital Software company.
             We thread heritage craft through software so every visit builds on the last.
           </p>
         </motion.div>

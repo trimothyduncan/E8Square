@@ -9,20 +9,21 @@ const SERVICES = [
     category: 'Cuts',
     icon: Scissors,
     items: [
-      { name: 'Haircut',              duration: '45 min', price: '$45' },
-      { name: 'Haircut + Beard',      duration: '60 min', price: '$60' },
-      { name: 'Kid\'s Cut (12 & under)', duration: '30 min', price: '$30' },
-      { name: 'Shape Up / Edge Up',   duration: '20 min', price: '$20' },
+      { name: 'Haircut',              duration: '60 min', price: '$150 TTD' },
+      { name: 'Taper Fade',           duration: '45 min', price: '$100 TTD' },
+      { name: 'Beard & Bald Head',    duration: '45 min', price: '$100 TTD' },
+      { name: 'Line Up / Edge Up',    duration: '30 min', price: '$70 TTD' },
+      
     ],
   },
   {
-    category: 'Beard',
+    category: 'Packages',
     icon: Star,
     items: [
-      { name: 'Beard Trim & Shape',   duration: '25 min', price: '$25' },
-      { name: 'Beard Line Up',        duration: '15 min', price: '$15' },
-      { name: 'Hot Towel Shave',      duration: '30 min', price: '$35' },
-      { name: 'Full Face Shave',      duration: '45 min', price: '$45' },
+      { name: 'Facial',   duration: '60 min', price: '$100 TTD' },
+      { name: 'Hot Towel Shave',        duration: '30 mins', price: '$60 TTD' },
+      { name: 'Hot Towel(ONLY)',      duration: '20 min', price: '$40 TTD' },
+      { name: 'Shampoo',      duration: '45 min', price: '$60 TTD' },
     ],
   },
 ];
@@ -30,7 +31,7 @@ const SERVICES = [
 const TIERS = [
   {
     name: 'Starter',
-    price: '$45',
+    price: '$180 TTD',
     cadence: 'per visit',
     summary: 'Walk-in pricing for the essentials. Clean, precise, no commitment.',
     perks: [
@@ -42,11 +43,12 @@ const TIERS = [
   },
   {
     name: 'TT Loyalty',
-    price: '$89',
+    price: '$300 TTD',
     cadence: 'per month',
     summary: 'Your pass, your perks. Two cuts a month, priority slots, and wallet access.',
     perks: [
       '2 cuts / month',
+      'Hot-towel finish',
       'Beard sculpt included',
       'Priority booking',
       'Style memory + photo log',
@@ -61,11 +63,11 @@ const TIERS = [
     cadence: 'per month',
     summary: 'Concierge-level access. House calls, personal barber, no limits.',
     perks: [
-      'Unlimited cuts',
-      'House call (within 15 mi)',
+      '2 Cuts / month',
+      '1 Facial with hot-towel finish',
       'First-access booking',
-      'Dedicated barber',
-      'Travel shop access',
+      'Sunday & holiday availability',
+      'Membership card + digital wallet pass',
       '20% off products & apparel',
     ],
   },
@@ -106,7 +108,7 @@ export default function Services() {
             transition={{ duration: 0.65, delay: 0.1 }}
             className="max-w-sm text-[var(--fg-muted)] leading-relaxed"
           >
-            Book online through Calendly. TT Loyalty members get priority slots and wallet perks.
+            Book online through Calendly. TT Loyalty Royalty members get priority slots and wallet perks.
           </motion.p>
         </div>
 

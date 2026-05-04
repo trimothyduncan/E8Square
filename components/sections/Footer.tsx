@@ -12,7 +12,7 @@ const COLS = [
       { label: 'About',     href: '#about'     },
       { label: 'Services',  href: '#services'  },
       { label: 'Portfolio', href: '#portfolio' },
-      { label: 'Careers',   href: '#'          },
+      { label: 'TT Loyalty',   href: '#cta'          },
     ],
   },
   {
@@ -27,10 +27,9 @@ const COLS = [
   {
     title: 'Hours',
     links: [
-      { label: 'Tue – Fri · 10:00 – 20:00', href: '#' },
-      { label: 'Sat · 09:00 – 18:00',       href: '#' },
+      { label: 'Mon – Wed · 10:00 – 18:00', href: '#' },
+      { label: 'Thur - Sat · 10:00 – 20:00',       href: '#' },
       { label: 'Sun · Members only',         href: '#' },
-      { label: 'Mon · Closed',               href: '#' },
     ],
   },
 ];
@@ -73,21 +72,21 @@ export default function Footer() {
             </div>
 
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-[var(--fg-muted)]">
-              Premium grooming studio backed by a SaaS-grade membership platform.
+              Premium grooming studio backed by, a Tech company crafting the future of membership and loyalty programs for local businesses.
             </p>
 
             <div className="mt-6 space-y-2.5 text-sm">
               <div className="flex items-center gap-2 text-[var(--fg-muted)]">
                 <MapPin className="h-4 w-4 shrink-0 text-[var(--brand)]" />
-                88 Studio Row, Suite E8
+                26 Lord Street. San Fernando, Trinidad
               </div>
               <div className="flex items-center gap-2 text-[var(--fg-muted)]">
                 <Phone className="h-4 w-4 shrink-0 text-[var(--brand)]" />
-                +1 (555) 010-0E8E
+                +1 (868) 762-8189
               </div>
               <div className="flex items-center gap-2 text-[var(--fg-muted)]">
                 <Mail className="h-4 w-4 shrink-0 text-[var(--brand)]" />
-                hello@e8square.shop
+                e8square@gmail.com
               </div>
             </div>
 

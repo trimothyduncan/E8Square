@@ -81,8 +81,8 @@ export default function Hero() {
           transition={{ delay: 1.1, duration: 0.65 }}
           className="mt-8 max-w-lg text-lg leading-relaxed text-[var(--fg-muted)] md:text-xl"
         >
-          A barber studio backed by a SaaS-grade membership platform.
-          Precision cuts, style memory, and a digital pass that lives in your wallet.
+          Private barber studio in the heart of the city.
+          As well as a Tech company crafting the future of membership and loyalty programs for local businesses.
         </motion.p>
 
         {/* CTAs */}
@@ -120,8 +120,8 @@ export default function Hero() {
         >
           {[
             { k: '12+', v: 'Years mastery' },
-            { k: '4.9', v: '1,200 reviews' },
-            { k: '3K+', v: 'Active members' },
+            { k: '4.9', v: 'Thousands of reviews' },
+            { k: '1K+', v: 'Active members' },
           ].map((s) => (
             <div key={s.k} className="glass-card rounded-2xl p-4">
               <div className="font-display text-2xl font-bold tracking-tight md:text-3xl">{s.k}</div>
