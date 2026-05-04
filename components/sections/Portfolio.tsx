@@ -194,7 +194,7 @@ export default function Portfolio() {
         >
           {[0, 1].map((k) => (
             <span key={k} className="px-10">
-              TT LOYALTY — PREMIUM CUTS — DIGITAL PASS — WHERE STYLE MEETS PRECISION —
+              TT LOYALTY 
             </span>
           ))}
         </motion.div>
