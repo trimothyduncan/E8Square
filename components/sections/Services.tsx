@@ -2,7 +2,30 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { Check } from 'lucide-react';
+import { Check, Clock, Scissors, Star } from 'lucide-react';
+
+const SERVICES = [
+  {
+    category: 'Cuts',
+    icon: Scissors,
+    items: [
+      { name: 'Haircut',              duration: '45 min', price: '$45' },
+      { name: 'Haircut + Beard',      duration: '60 min', price: '$60' },
+      { name: 'Kid\'s Cut (12 & under)', duration: '30 min', price: '$30' },
+      { name: 'Shape Up / Edge Up',   duration: '20 min', price: '$20' },
+    ],
+  },
+  {
+    category: 'Beard',
+    icon: Star,
+    items: [
+      { name: 'Beard Trim & Shape',   duration: '25 min', price: '$25' },
+      { name: 'Beard Line Up',        duration: '15 min', price: '$15' },
+      { name: 'Hot Towel Shave',      duration: '30 min', price: '$35' },
+      { name: 'Full Face Shave',      duration: '45 min', price: '$45' },
+    ],
+  },
+];
 
 const TIERS = [
   {
@@ -10,14 +33,26 @@ const TIERS = [
     price: '$45',
     cadence: 'per visit',
     summary: 'Walk-in pricing for the essentials. Clean, precise, no commitment.',
-    perks: ['Signature cut', 'Hot-towel finish', 'Style memory log', 'Online booking'],
+    perks: [
+      'Signature haircut',
+      'Hot-towel finish',
+      'Style memory log',
+      'Online booking via Calendly',
+    ],
   },
   {
-    name: 'Member',
+    name: 'TT Loyalty',
     price: '$89',
     cadence: 'per month',
-    summary: 'For those who come twice a month. Member rates, member perks.',
-    perks: ['2 cuts / month', 'Beard sculpt', 'Priority booking', 'Style memory + photo log', '10% on products'],
+    summary: 'Your pass, your perks. Two cuts a month, priority slots, and wallet access.',
+    perks: [
+      '2 cuts / month',
+      'Beard sculpt included',
+      'Priority booking',
+      'Style memory + photo log',
+      'Digital wallet pass',
+      '10% off retail products',
+    ],
     highlighted: true,
   },
   {
@@ -25,7 +60,14 @@ const TIERS = [
     price: '$249',
     cadence: 'per month',
     summary: 'Concierge-level access. House calls, personal barber, no limits.',
-    perks: ['Unlimited cuts', 'House call (within 15 mi)', 'First-access booking', 'Dedicated barber', 'Travel shop access', '20% on products & apparel'],
+    perks: [
+      'Unlimited cuts',
+      'House call (within 15 mi)',
+      'First-access booking',
+      'Dedicated barber',
+      'Travel shop access',
+      '20% off products & apparel',
+    ],
   },
 ];
 
@@ -36,13 +78,13 @@ export default function Services() {
 
   return (
     <section id="services" ref={ref} className="relative py-32 overflow-hidden">
-      {/* Ambient glow */}
       <motion.div
         style={{ y: yGlow }}
         className="orb absolute -left-40 top-1/3 h-[55vmin] w-[55vmin] bg-[rgba(26,107,255,0.09)]"
       />
 
       <div className="mx-auto max-w-7xl px-6 md:px-10">
+        {/* Header */}
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -51,10 +93,10 @@ export default function Services() {
             transition={{ duration: 0.65 }}
           >
             <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--brand)]">
-              02 — Membership
+              02 — Services & Membership
             </span>
             <h2 className="mt-4 font-display text-4xl leading-[1.05] tracking-tight md:text-6xl">
-              Choose your <span className="italic text-gradient">plan.</span>
+              Book your <span className="italic text-gradient">session.</span>
             </h2>
           </motion.div>
           <motion.p
@@ -64,11 +106,70 @@ export default function Services() {
             transition={{ duration: 0.65, delay: 0.1 }}
             className="max-w-sm text-[var(--fg-muted)] leading-relaxed"
           >
-            Three tiers to match your cadence. Pause, switch, or cancel anytime from the members dashboard.
+            Book online through Calendly. TT Loyalty members get priority slots and wallet perks.
           </motion.p>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
+        {/* A la carte services */}
+        <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2">
+          {SERVICES.map((group, gi) => {
+            const Icon = group.icon;
+            return (
+              <motion.div
+                key={group.category}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.65, delay: gi * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="glass-card rounded-3xl p-8"
+              >
+                <div className="mb-6 flex items-center gap-3">
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--brand-soft)] text-[var(--brand)]">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-display text-2xl tracking-tight">{group.category}</h3>
+                </div>
+                <ul className="space-y-3">
+                  {group.items.map((item) => (
+                    <li key={item.name} className="flex items-center justify-between border-b border-[var(--border)] pb-3 last:border-0 last:pb-0">
+                      <div>
+                        <span className="text-sm font-medium">{item.name}</span>
+                        <div className="mt-0.5 flex items-center gap-1 text-xs text-[var(--fg-muted)]">
+                          <Clock className="h-3 w-3" />
+                          {item.duration}
+                        </div>
+                      </div>
+                      <span className="font-display text-lg font-bold text-[var(--brand)]">{item.price}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href="https://calendly.com/trimbyblue"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full glass border-[var(--brand)] text-[var(--brand)] px-6 py-3 text-sm font-semibold transition hover:bg-[var(--brand-soft)]"
+                >
+                  Book on Calendly →
+                </a>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Membership divider */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, delay: 0.1 }}
+          className="mt-20 flex items-center gap-6"
+        >
+          <div className="h-px flex-1 bg-[var(--border)]" />
+          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--fg-muted)]">Membership Plans</span>
+          <div className="h-px flex-1 bg-[var(--border)]" />
+        </motion.div>
+
+        <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
           {TIERS.map((t, i) => (
             <motion.div
               key={t.name}
@@ -86,7 +187,6 @@ export default function Services() {
             >
               {t.highlighted && (
                 <>
-                  {/* Specular shine on the highlighted card */}
                   <div className="pointer-events-none absolute inset-0 rounded-3xl"
                     style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 50%)' }} />
                   <div className="absolute right-5 top-5 rounded-full bg-white/20 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest">

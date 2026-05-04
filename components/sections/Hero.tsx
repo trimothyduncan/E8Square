@@ -46,7 +46,7 @@ export default function Hero() {
           className="mb-8 inline-flex w-fit items-center gap-2.5 rounded-full glass px-4 py-2 text-xs font-medium uppercase tracking-[0.2em]"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand)] animate-pulse" />
-          <span className="text-[var(--fg-muted)]">E8 Pass v2 — Now Live</span>
+          <span className="text-[var(--fg-muted)]">TT Loyalty Pass V1 — Coming Soon</span>
         </motion.div>
 
         {/* Headline */}

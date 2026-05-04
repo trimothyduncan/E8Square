@@ -2,18 +2,59 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
+import { Heart, MessageCircle, ImagePlus } from 'lucide-react';
 
-const WORKS = [
-  { title: 'The Clean Drop',   tag: 'Skin fade · Mid · Textured' },
-  { title: 'Disconnected Crop', tag: 'Scissor · Hard part'        },
-  { title: 'Classic Taper',    tag: 'Clipper · Natural finish'    },
-  { title: 'Long & Layered',   tag: 'Scissor · Layered texture'  },
-  { title: 'Beard Sculpt',     tag: 'Line-up · Full sculpt'      },
-  { title: 'Father & Son Set', tag: 'Duo booking · Studio'       },
+// ─── Replace these with real Instagram post data ──────────────────────────────
+// To add real images: place files in /public/portfolio/ and update src below.
+// Caption and comments come from the actual Instagram post.
+const POSTS = [
+  {
+    src: null,
+    caption: 'Drop your caption here from @trimbyblue post 1',
+    likes: '—',
+    comments: '—',
+    tag: 'Recent Work',
+  },
+  {
+    src: null,
+    caption: 'Drop your caption here from @trimbyblue post 2',
+    likes: '—',
+    comments: '—',
+    tag: 'Recent Work',
+  },
+  {
+    src: null,
+    caption: 'Drop your caption here from @trimbyblue post 3',
+    likes: '—',
+    comments: '—',
+    tag: 'Recent Work',
+  },
+  {
+    src: null,
+    caption: 'Drop your caption here from @trimbyblue post 4',
+    likes: '—',
+    comments: '—',
+    tag: 'Recent Work',
+  },
+  {
+    src: null,
+    caption: 'Drop your caption here from @trimbyblue post 5',
+    likes: '—',
+    comments: '—',
+    tag: 'Recent Work',
+  },
+  {
+    src: null,
+    caption: 'Drop your caption here from @trimbyblue post 6',
+    likes: '—',
+    comments: '—',
+    tag: 'Recent Work',
+  },
 ];
+// ─────────────────────────────────────────────────────────────────────────────
 
-function WorkTile({ idx }: { idx: number }) {
-  const palettes = [
+function PostPlaceholder({ idx }: { idx: number }) {
+  const gradients = [
     ['#1a6bff', '#0a3fa8'],
     ['#2563eb', '#1e40af'],
     ['#3b82f6', '#1d4ed8'],
@@ -21,29 +62,16 @@ function WorkTile({ idx }: { idx: number }) {
     ['#4787ff', '#1a6bff'],
     ['#60a5fa', '#2563eb'],
   ];
-  const [a, b] = palettes[idx % palettes.length];
+  const [a, b] = gradients[idx % gradients.length];
 
   return (
-    <svg viewBox="0 0 400 500" className="h-full w-full" preserveAspectRatio="xMidYMid slice" aria-hidden>
-      <defs>
-        <linearGradient id={`g-${idx}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={a} stopOpacity="0.92" />
-          <stop offset="100%" stopColor={b} stopOpacity="0.7" />
-        </linearGradient>
-      </defs>
-      <rect width="100%" height="100%" fill={`url(#g-${idx})`} />
-      {/* Abstract silhouette */}
-      <ellipse cx="200" cy="195" rx="85" ry="100" fill="rgba(0,0,0,0.28)" />
-      <path d="M 115 285 Q 200 235 285 285 L 295 500 L 105 500 Z" fill="rgba(0,0,0,0.28)" />
-      {/* Shine */}
-      <rect x="0" y="0" width="400" height="500" fill="url(#shine)" opacity="0.12" />
-      <defs>
-        <linearGradient id="shine" x1="0" y1="0" x2="0.4" y2="0.4">
-          <stop offset="0%" stopColor="white" stopOpacity="1" />
-          <stop offset="100%" stopColor="white" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-    </svg>
+    <div
+      className="flex h-full w-full flex-col items-center justify-center gap-3 text-white/50"
+      style={{ background: `linear-gradient(135deg, ${a}55 0%, ${b}33 100%)` }}
+    >
+      <ImagePlus className="h-8 w-8" />
+      <span className="text-xs font-mono tracking-wider">post {idx + 1}</span>
+    </div>
   );
 }
 
@@ -73,17 +101,19 @@ export default function Portfolio() {
             </h2>
           </div>
           <a
-            href="#cta"
+            href="https://www.instagram.com/trimbyblue"
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden md:inline-flex items-center gap-2 rounded-full glass px-5 py-2.5 text-sm hover:border-[var(--brand)] transition"
           >
-            View all →
+            @trimbyblue →
           </a>
         </motion.div>
 
         <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {WORKS.map((w, i) => (
+          {POSTS.map((post, i) => (
             <motion.article
-              key={w.title}
+              key={i}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
@@ -91,34 +121,70 @@ export default function Portfolio() {
               whileHover="hover"
               className="group relative overflow-hidden rounded-3xl glass-card cursor-pointer"
             >
-              <div className="aspect-[4/5] overflow-hidden">
+              <div className="aspect-square overflow-hidden">
                 <motion.div
-                  variants={{ hover: { scale: 1.06 } }}
-                  transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                  variants={{ hover: { scale: 1.04 } }}
+                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                   className="h-full w-full"
                 >
-                  <WorkTile idx={i} />
+                  {post.src ? (
+                    /* Replace PostPlaceholder with next/image once you have real images */
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={post.src}
+                      alt={post.caption}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <PostPlaceholder idx={i} />
+                  )}
                 </motion.div>
               </div>
 
-              {/* Info overlay */}
-              <div className="absolute inset-x-0 bottom-0 p-5">
-                <motion.div
-                  initial={{ y: 10, opacity: 0.9 }}
-                  variants={{ hover: { y: 0, opacity: 1 } }}
-                  transition={{ duration: 0.4 }}
-                  className="rounded-2xl glass p-4"
-                >
-                  <h3 className="font-display text-lg tracking-tight">{w.title}</h3>
-                  <p className="mt-0.5 text-xs text-[var(--fg-muted)]">{w.tag}</p>
-                </motion.div>
-              </div>
+              {/* Caption overlay */}
+              <motion.div
+                initial={{ y: 8, opacity: 0.85 }}
+                variants={{ hover: { y: 0, opacity: 1 } }}
+                transition={{ duration: 0.35 }}
+                className="absolute inset-x-0 bottom-0 p-4"
+              >
+                <div className="rounded-2xl glass p-3.5">
+                  <p className="line-clamp-2 text-xs leading-relaxed text-[var(--fg-muted)]">
+                    {post.caption}
+                  </p>
+                  <div className="mt-2.5 flex items-center gap-3 text-[10px] text-[var(--fg-muted)]">
+                    <span className="flex items-center gap-1">
+                      <Heart className="h-3 w-3 text-[var(--brand)]" /> {post.likes}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <MessageCircle className="h-3 w-3 text-[var(--brand)]" /> {post.comments}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
 
               {/* Hover ring */}
               <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-inset ring-transparent transition duration-300 group-hover:ring-[var(--brand)]/40" />
             </motion.article>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, delay: 0.3 }}
+          className="mt-10 text-center"
+        >
+          <a
+            href="https://www.instagram.com/trimbyblue"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-medium hover:border-[var(--brand)] hover:text-[var(--brand)] transition"
+          >
+            Follow @trimbyblue for more →
+          </a>
+        </motion.div>
       </div>
 
       {/* Scrolling wordmark */}
@@ -129,7 +195,7 @@ export default function Portfolio() {
         >
           {[0, 1].map((k) => (
             <span key={k} className="px-10">
-              E8 SQUARE — PREMIUM STUDIO — DIGITAL PASS — WHERE STYLE MEETS PRECISION —
+              TT LOYALTY — PREMIUM CUTS — DIGITAL PASS — WHERE STYLE MEETS PRECISION —
             </span>
           ))}
         </motion.div>
