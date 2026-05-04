@@ -5,11 +5,8 @@ import Services  from '@/components/sections/Services';
 import Portfolio from '@/components/sections/Portfolio';
 import CTA       from '@/components/sections/CTA';
 import Footer    from '@/components/sections/Footer';
-import { getInstagramPosts } from '@/lib/instagram';
 
-export default async function Home() {
-  const posts = await getInstagramPosts(6);
-
+export default function Home() {
   return (
     <>
       <Navbar />
@@ -17,7 +14,7 @@ export default async function Home() {
         <Hero />
         <About />
         <Services />
-        <Portfolio posts={posts} />
+        <Portfolio />
         <CTA />
       </main>
       <Footer />

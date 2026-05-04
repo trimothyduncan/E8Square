@@ -39,19 +39,7 @@ export default function Navbar() {
           paddingBottom: scrolled ? 10 : 14,
         }}
         transition={{ duration: 0.3 }}
-        className="relative flex w-full max-w-5xl items-center justify-between rounded-full px-5 md:px-6"
-        style={{
-          background: scrolled
-            ? 'color-mix(in oklch, var(--bg-elev) 55%, transparent)'
-            : 'transparent',
-          backdropFilter: scrolled ? 'saturate(200%) blur(24px)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'saturate(200%) blur(24px)' : 'none',
-          border: scrolled ? '1px solid rgba(255,255,255,0.18)' : '1px solid transparent',
-          boxShadow: scrolled
-            ? '0 2px 0 0 rgba(255,255,255,0.3) inset, 0 8px 32px -4px rgba(0,0,0,0.1)'
-            : 'none',
-          transition: 'background 0.3s, backdrop-filter 0.3s, border-color 0.3s, box-shadow 0.3s, padding 0.3s',
-        }}
+        className={`relative flex w-full max-w-5xl items-center justify-between rounded-full px-5 md:px-6 transition-all duration-300 ${scrolled ? 'nav-scrolled' : 'border border-transparent'}`}
       >
         {/* Logo + wordmark */}
         <Link href="#top" className="flex items-center gap-2.5 relative z-10" aria-label="E8 Square home">

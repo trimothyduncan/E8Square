@@ -1,12 +1,17 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Heart, MessageCircle, ImagePlus } from 'lucide-react';
-import type { InstagramPost } from '@/lib/instagram';
 
-interface PortfolioProps {
-  posts: InstagramPost[];
+interface InstagramPost {
+  id: string;
+  caption?: string;
+  media_url: string;
+  thumbnail_url?: string;
+  media_type: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
+  timestamp: string;
+  permalink: string;
 }
 
 function PostPlaceholder({ idx }: { idx: number }) {
@@ -19,7 +24,6 @@ function PostPlaceholder({ idx }: { idx: number }) {
     ['#60a5fa', '#2563eb'],
   ];
   const [a, b] = gradients[idx % gradients.length];
-
   return (
     <div
       className="flex h-full w-full flex-col items-center justify-center gap-3 text-white/50"
@@ -31,12 +35,20 @@ function PostPlaceholder({ idx }: { idx: number }) {
   );
 }
 
-export default function Portfolio({ posts }: PortfolioProps) {
+export default function Portfolio() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const xScroll = useTransform(scrollYProgress, [0, 1], ['-5%', '5%']);
+  const [posts, setPosts] = useState<InstagramPost[]>([]);
 
-  // Pad to 6 slots so layout is always a full grid
+  useEffect(() => {
+    fetch('/instagram-posts.json')
+      .then((r) => r.json())
+      .then((json) => setPosts(json.data ?? []))
+      .catch(() => {});
+  }, []);
+
+  // Always show 6 slots; fill remaining with null placeholders
   const slots = Array.from({ length: 6 }, (_, i) => posts[i] ?? null);
 
   return (
@@ -95,7 +107,11 @@ export default function Portfolio({ posts }: PortfolioProps) {
                     {post ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={post.media_type === 'VIDEO' ? (post.thumbnail_url ?? post.media_url) : post.media_url}
+                        src={
+                          post.media_type === 'VIDEO'
+                            ? (post.thumbnail_url ?? post.media_url)
+                            : post.media_url
+                        }
                         alt={post.caption ?? 'Instagram post by @trimbyblue'}
                         className="h-full w-full object-cover"
                       />
@@ -105,7 +121,6 @@ export default function Portfolio({ posts }: PortfolioProps) {
                   </motion.div>
                 </div>
 
-                {/* Caption overlay */}
                 {post?.caption && (
                   <motion.div
                     initial={{ y: 8, opacity: 0.85 }}
@@ -125,7 +140,10 @@ export default function Portfolio({ posts }: PortfolioProps) {
                           <MessageCircle className="h-3 w-3 text-[var(--brand)]" />
                         </span>
                         <span className="ml-auto opacity-60">
-                          {new Date(post.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          {new Date(post.timestamp).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                          })}
                         </span>
                       </div>
                     </div>
@@ -133,7 +151,6 @@ export default function Portfolio({ posts }: PortfolioProps) {
                 )}
               </a>
 
-              {/* Hover ring */}
               <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-inset ring-transparent transition duration-300 group-hover:ring-[var(--brand)]/40" />
             </motion.article>
           ))}
@@ -157,7 +174,6 @@ export default function Portfolio({ posts }: PortfolioProps) {
         </motion.div>
       </div>
 
-      {/* Scrolling wordmark */}
       <div className="relative mt-24 overflow-hidden">
         <motion.div
           style={{ x: xScroll }}

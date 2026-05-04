@@ -47,6 +47,7 @@ body {
 
 /* ---------- iOS 26 Liquid Glass ---------- */
 .glass {
+  background: rgba(255, 255, 255, 0.60);
   background: color-mix(in oklch, var(--bg-elev) 55%, transparent);
   backdrop-filter: saturate(200%) blur(24px) brightness(1.04);
   -webkit-backdrop-filter: saturate(200%) blur(24px) brightness(1.04);
@@ -58,6 +59,7 @@ body {
 }
 
 .dark .glass {
+  background: rgba(15, 15, 20, 0.60);
   background: color-mix(in oklch, var(--bg-elev) 45%, transparent);
   border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow:
@@ -68,6 +70,7 @@ body {
 
 /* Glass card — elevated, with specular highlight + soft rim */
 .glass-card {
+  background: rgba(255, 255, 255, 0.70);
   background: color-mix(in oklch, var(--bg-elev) 60%, transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -81,6 +84,7 @@ body {
 }
 
 .dark .glass-card {
+  background: rgba(15, 15, 20, 0.65);
   background: color-mix(in oklch, var(--bg-elev) 50%, transparent);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
@@ -88,6 +92,27 @@ body {
     0 -1px 0 0 rgba(0, 0, 0, 0.3) inset,
     0 4px 16px rgba(0, 0, 0, 0.3),
     0 16px 48px rgba(0, 0, 0, 0.25);
+}
+
+/* Scrolled navbar glass — used as a CSS class for broad browser support */
+.nav-scrolled {
+  background: rgba(255, 255, 255, 0.70);
+  background: color-mix(in oklch, var(--bg-elev) 55%, transparent);
+  backdrop-filter: saturate(200%) blur(24px);
+  -webkit-backdrop-filter: saturate(200%) blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 2px 0 0 rgba(255, 255, 255, 0.30) inset,
+    0 8px 32px -4px rgba(0, 0, 0, 0.10);
+}
+
+.dark .nav-scrolled {
+  background: rgba(9, 9, 14, 0.75);
+  background: color-mix(in oklch, var(--bg-elev) 55%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow:
+    0 2px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 8px 32px -4px rgba(0, 0, 0, 0.45);
 }
 
 /* Noise grain overlay */
@@ -117,16 +142,6 @@ body {
   border-radius: 50%;
   filter: blur(80px);
   pointer-events: none;
-}
-
-/* Custom cursor */
-@media (hover: hover) and (pointer: fine) {
-  body.has-custom-cursor,
-  body.has-custom-cursor a,
-  body.has-custom-cursor button,
-  body.has-custom-cursor [role="button"] {
-    cursor: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
