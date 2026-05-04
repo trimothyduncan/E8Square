@@ -3,55 +3,11 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Heart, MessageCircle, ImagePlus } from 'lucide-react';
+import type { InstagramPost } from '@/lib/instagram';
 
-// ─── Replace these with real Instagram post data ──────────────────────────────
-// To add real images: place files in /public/portfolio/ and update src below.
-// Caption and comments come from the actual Instagram post.
-const POSTS = [
-  {
-    src: null,
-    caption: 'Drop your caption here from @trimbyblue post 1',
-    likes: '—',
-    comments: '—',
-    tag: 'Recent Work',
-  },
-  {
-    src: null,
-    caption: 'Drop your caption here from @trimbyblue post 2',
-    likes: '—',
-    comments: '—',
-    tag: 'Recent Work',
-  },
-  {
-    src: null,
-    caption: 'Drop your caption here from @trimbyblue post 3',
-    likes: '—',
-    comments: '—',
-    tag: 'Recent Work',
-  },
-  {
-    src: null,
-    caption: 'Drop your caption here from @trimbyblue post 4',
-    likes: '—',
-    comments: '—',
-    tag: 'Recent Work',
-  },
-  {
-    src: null,
-    caption: 'Drop your caption here from @trimbyblue post 5',
-    likes: '—',
-    comments: '—',
-    tag: 'Recent Work',
-  },
-  {
-    src: null,
-    caption: 'Drop your caption here from @trimbyblue post 6',
-    likes: '—',
-    comments: '—',
-    tag: 'Recent Work',
-  },
-];
-// ─────────────────────────────────────────────────────────────────────────────
+interface PortfolioProps {
+  posts: InstagramPost[];
+}
 
 function PostPlaceholder({ idx }: { idx: number }) {
   const gradients = [
@@ -70,15 +26,18 @@ function PostPlaceholder({ idx }: { idx: number }) {
       style={{ background: `linear-gradient(135deg, ${a}55 0%, ${b}33 100%)` }}
     >
       <ImagePlus className="h-8 w-8" />
-      <span className="text-xs font-mono tracking-wider">post {idx + 1}</span>
+      <span className="text-xs font-mono tracking-wider">@trimbyblue</span>
     </div>
   );
 }
 
-export default function Portfolio() {
+export default function Portfolio({ posts }: PortfolioProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const xScroll = useTransform(scrollYProgress, [0, 1], ['-5%', '5%']);
+
+  // Pad to 6 slots so layout is always a full grid
+  const slots = Array.from({ length: 6 }, (_, i) => posts[i] ?? null);
 
   return (
     <section id="portfolio" ref={ref} className="relative py-32 overflow-hidden">
@@ -111,9 +70,9 @@ export default function Portfolio() {
         </motion.div>
 
         <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {POSTS.map((post, i) => (
+          {slots.map((post, i) => (
             <motion.article
-              key={i}
+              key={post?.id ?? `placeholder-${i}`}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
@@ -121,47 +80,58 @@ export default function Portfolio() {
               whileHover="hover"
               className="group relative overflow-hidden rounded-3xl glass-card cursor-pointer"
             >
-              <div className="aspect-square overflow-hidden">
-                <motion.div
-                  variants={{ hover: { scale: 1.04 } }}
-                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className="h-full w-full"
-                >
-                  {post.src ? (
-                    /* Replace PostPlaceholder with next/image once you have real images */
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={post.src}
-                      alt={post.caption}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <PostPlaceholder idx={i} />
-                  )}
-                </motion.div>
-              </div>
-
-              {/* Caption overlay */}
-              <motion.div
-                initial={{ y: 8, opacity: 0.85 }}
-                variants={{ hover: { y: 0, opacity: 1 } }}
-                transition={{ duration: 0.35 }}
-                className="absolute inset-x-0 bottom-0 p-4"
+              <a
+                href={post?.permalink ?? 'https://www.instagram.com/trimbyblue'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
               >
-                <div className="rounded-2xl glass p-3.5">
-                  <p className="line-clamp-2 text-xs leading-relaxed text-[var(--fg-muted)]">
-                    {post.caption}
-                  </p>
-                  <div className="mt-2.5 flex items-center gap-3 text-[10px] text-[var(--fg-muted)]">
-                    <span className="flex items-center gap-1">
-                      <Heart className="h-3 w-3 text-[var(--brand)]" /> {post.likes}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <MessageCircle className="h-3 w-3 text-[var(--brand)]" /> {post.comments}
-                    </span>
-                  </div>
+                <div className="aspect-square overflow-hidden">
+                  <motion.div
+                    variants={{ hover: { scale: 1.04 } }}
+                    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    className="h-full w-full"
+                  >
+                    {post ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={post.media_type === 'VIDEO' ? (post.thumbnail_url ?? post.media_url) : post.media_url}
+                        alt={post.caption ?? 'Instagram post by @trimbyblue'}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <PostPlaceholder idx={i} />
+                    )}
+                  </motion.div>
                 </div>
-              </motion.div>
+
+                {/* Caption overlay */}
+                {post?.caption && (
+                  <motion.div
+                    initial={{ y: 8, opacity: 0.85 }}
+                    variants={{ hover: { y: 0, opacity: 1 } }}
+                    transition={{ duration: 0.35 }}
+                    className="absolute inset-x-0 bottom-0 p-4"
+                  >
+                    <div className="rounded-2xl glass p-3.5">
+                      <p className="line-clamp-2 text-xs leading-relaxed text-[var(--fg-muted)]">
+                        {post.caption}
+                      </p>
+                      <div className="mt-2.5 flex items-center gap-3 text-[10px] text-[var(--fg-muted)]">
+                        <span className="flex items-center gap-1">
+                          <Heart className="h-3 w-3 text-[var(--brand)]" />
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <MessageCircle className="h-3 w-3 text-[var(--brand)]" />
+                        </span>
+                        <span className="ml-auto opacity-60">
+                          {new Date(post.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </a>
 
               {/* Hover ring */}
               <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-inset ring-transparent transition duration-300 group-hover:ring-[var(--brand)]/40" />
