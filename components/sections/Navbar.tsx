@@ -83,7 +83,7 @@ export default function Navbar() {
           </Link>
           <button
             onClick={() => setOpen((o) => !o)}
-            className="md:hidden grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] bg-[var(--bg-elev)]/60 backdrop-blur"
+            className="md:hidden grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] bg-white/60 dark:bg-black/60 backdrop-blur"
             aria-label="Toggle menu"
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}

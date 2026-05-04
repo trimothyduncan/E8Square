@@ -4,12 +4,20 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { Heart, MessageCircle, ImagePlus } from 'lucide-react';
 
-interface InstagramPost {
+// ─── CONFIGURATION ────────────────────────────────────────────────────────────
+// 1. Go to https://behold.so and sign up with your Instagram account (@trimbyblue)
+// 2. Create a feed → copy the Feed ID (looks like: abcDEF123456)
+// 3. Paste it below OR set NEXT_PUBLIC_BEHOLD_FEED_ID in your .env.local
+const BEHOLD_FEED_ID =
+  process.env.NEXT_PUBLIC_BEHOLD_FEED_ID ?? '';
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface Post {
   id: string;
   caption?: string;
-  media_url: string;
-  thumbnail_url?: string;
-  media_type: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
+  mediaUrl: string;
+  thumbnailUrl?: string;
+  mediaType: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
   timestamp: string;
   permalink: string;
 }
@@ -39,16 +47,16 @@ export default function Portfolio() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const xScroll = useTransform(scrollYProgress, [0, 1], ['-5%', '5%']);
-  const [posts, setPosts] = useState<InstagramPost[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    fetch('/instagram-posts.json')
+    if (!BEHOLD_FEED_ID) return;
+    fetch(`https://feeds.behold.so/${BEHOLD_FEED_ID}`)
       .then((r) => r.json())
-      .then((json) => setPosts(json.data ?? []))
+      .then((data: Post[]) => setPosts(data.slice(0, 6)))
       .catch(() => {});
   }, []);
 
-  // Always show 6 slots; fill remaining with null placeholders
   const slots = Array.from({ length: 6 }, (_, i) => posts[i] ?? null);
 
   return (
@@ -108,9 +116,9 @@ export default function Portfolio() {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={
-                          post.media_type === 'VIDEO'
-                            ? (post.thumbnail_url ?? post.media_url)
-                            : post.media_url
+                          post.mediaType === 'VIDEO'
+                            ? (post.thumbnailUrl ?? post.mediaUrl)
+                            : post.mediaUrl
                         }
                         alt={post.caption ?? 'Instagram post by @trimbyblue'}
                         className="h-full w-full object-cover"
@@ -133,12 +141,8 @@ export default function Portfolio() {
                         {post.caption}
                       </p>
                       <div className="mt-2.5 flex items-center gap-3 text-[10px] text-[var(--fg-muted)]">
-                        <span className="flex items-center gap-1">
-                          <Heart className="h-3 w-3 text-[var(--brand)]" />
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <MessageCircle className="h-3 w-3 text-[var(--brand)]" />
-                        </span>
+                        <Heart className="h-3 w-3 text-[var(--brand)]" />
+                        <MessageCircle className="h-3 w-3 text-[var(--brand)]" />
                         <span className="ml-auto opacity-60">
                           {new Date(post.timestamp).toLocaleDateString('en-US', {
                             month: 'short',
