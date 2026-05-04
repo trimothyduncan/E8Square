@@ -4,30 +4,26 @@
 
 /* ---------- Theme tokens ---------- */
 :root {
-  --bg: #f5efe6;          /* ivory */
-  --bg-elev: #ffffff;
-  --fg: #0a0a0c;
-  --fg-muted: #5b5b62;
-  --border: rgba(10, 10, 12, 0.08);
-  --brand: #1a6bff;
-  --brand-soft: rgba(26, 107, 255, 0.12);
-  --grid: rgba(10, 10, 12, 0.06);
+  --bg:        #f0f2f8;
+  --bg-elev:   #ffffff;
+  --fg:        #0a0a0f;
+  --fg-muted:  #5b5b70;
+  --border:    rgba(10, 10, 15, 0.08);
+  --brand:     #1a6bff;
+  --brand-soft: rgba(26, 107, 255, 0.10);
 }
 
 .dark {
-  --bg: #0a0a0c;          /* onyx */
-  --bg-elev: #161618;
-  --fg: #f5efe6;
-  --fg-muted: #9a9aa3;
-  --border: rgba(245, 239, 230, 0.10);
-  --brand: #4787ff;
-  --brand-soft: rgba(71, 135, 255, 0.18);
-  --grid: rgba(255, 255, 255, 0.06);
+  --bg:        #060609;
+  --bg-elev:   #0f0f14;
+  --fg:        #f0f2f8;
+  --fg-muted:  #8888a0;
+  --border:    rgba(240, 242, 248, 0.08);
+  --brand:     #4787ff;
+  --brand-soft: rgba(71, 135, 255, 0.15);
 }
 
-* {
-  border-color: var(--border);
-}
+* { border-color: var(--border); }
 
 html {
   scroll-behavior: smooth;
@@ -39,35 +35,75 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
-  font-feature-settings: 'ss01', 'cv11';
   overflow-x: hidden;
 }
 
-/* ---------- Selection ---------- */
-::selection {
-  background: var(--brand);
-  color: #ffffff;
-}
+::selection { background: var(--brand); color: #fff; }
 
-/* ---------- Scrollbar ---------- */
-::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 999px;
-}
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--brand); }
 
-/* ---------- Reusable utilities ---------- */
+/* ---------- iOS 26 Liquid Glass ---------- */
 .glass {
-  background: color-mix(in oklab, var(--bg-elev) 70%, transparent);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border: 1px solid var(--border);
+  background: color-mix(in oklch, var(--bg-elev) 55%, transparent);
+  backdrop-filter: saturate(200%) blur(24px) brightness(1.04);
+  -webkit-backdrop-filter: saturate(200%) blur(24px) brightness(1.04);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 2px 0 0 rgba(255, 255, 255, 0.35) inset,
+    0 -1px 0 0 rgba(0, 0, 0, 0.06) inset,
+    0 8px 32px -4px rgba(0, 0, 0, 0.10);
 }
 
+.dark .glass {
+  background: color-mix(in oklch, var(--bg-elev) 45%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow:
+    0 2px 0 0 rgba(255, 255, 255, 0.07) inset,
+    0 -1px 0 0 rgba(0, 0, 0, 0.25) inset,
+    0 8px 32px -4px rgba(0, 0, 0, 0.45);
+}
+
+/* Glass card — elevated, with specular highlight + soft rim */
+.glass-card {
+  background: color-mix(in oklch, var(--bg-elev) 60%, transparent);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.5) inset,
+    0 -1px 0 0 rgba(0, 0, 0, 0.04) inset,
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 16px 48px rgba(0, 0, 0, 0.05);
+}
+
+.dark .glass-card {
+  background: color-mix(in oklch, var(--bg-elev) 50%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 -1px 0 0 rgba(0, 0, 0, 0.3) inset,
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    0 16px 48px rgba(0, 0, 0, 0.25);
+}
+
+/* Noise grain overlay */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Gradient text */
 .text-gradient {
-  background: linear-gradient(120deg, var(--brand), #8ab4ff 50%, var(--brand));
+  background: linear-gradient(125deg, var(--brand) 0%, #60a5ff 50%, var(--brand) 100%);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -75,27 +111,15 @@ body {
   animation: gradient-x 8s ease infinite;
 }
 
-.chessboard {
-  background-image:
-    linear-gradient(45deg, var(--grid) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--grid) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--grid) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--grid) 75%);
-  background-size: 48px 48px;
-  background-position: 0 0, 0 24px, 24px -24px, -24px 0;
-}
-
-.noise::after {
-  content: '';
+/* Orb glow blobs */
+.orb {
   position: absolute;
-  inset: 0;
+  border-radius: 50%;
+  filter: blur(80px);
   pointer-events: none;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
-/* Hide native cursor when custom cursor is active (desktop only) */
+/* Custom cursor */
 @media (hover: hover) and (pointer: fine) {
   body.has-custom-cursor,
   body.has-custom-cursor a,
@@ -105,18 +129,9 @@ body {
   }
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
-}
-
-/* Number marquee mask */
-.mask-fade-x {
-  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
 }
