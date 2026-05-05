@@ -59,7 +59,7 @@ const TIERS = [
   },
   {
     name: 'Elite',
-    price: '$249',
+    price: '$450 TTD',
     cadence: 'per month',
     summary: 'Concierge-level access. House calls, personal barber, no limits.',
     perks: [
